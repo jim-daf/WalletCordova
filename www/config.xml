@@ -9,7 +9,27 @@
         GreenAddress IT Ltd
     </author>
     <content src="start.html" />
-    <access origin="*" />
+    <!--
+        Issue #16: tighten the network access policy ahead of certificate
+        pinning. The previous `<access origin="*" />` allowed the WebView
+        to load any host, which defeats pinning at the platform level. We
+        replace it with explicit allow-list entries for greenaddress.it
+        infrastructure and the BIP-21 / mailto / tel intents the wallet
+        actually launches. A follow-up commit can drop in
+        `cordova-plugin-advanced-http` (or `cordova-plugin-ssl-pinning`)
+        to enforce the actual pin set against these hosts.
+    -->
+    <access origin="https://greenaddress.it" />
+    <access origin="https://*.greenaddress.it" />
+    <access origin="https://blockstream.com" />
+    <access origin="https://*.blockstream.com" />
+    <allow-navigation href="https://greenaddress.it/*" />
+    <allow-navigation href="https://*.greenaddress.it/*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="bitcoin:*" />
     <preference name="fullscreen" value="false" />
     <preference name="webviewbounce" value="true" />
     <preference name="errorUrl" value="file:///android_asset/www/offline.html" />
